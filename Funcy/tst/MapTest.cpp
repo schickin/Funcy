@@ -29,11 +29,6 @@ protected:
 		return n/2;
 	}
 
-	static bool isEven(int n)
-	{
-		return n % 2 == 0;
-	}
-
 	const TestVec oneToTen_;
 };
 
@@ -44,7 +39,7 @@ TEST_F(MapTest, doubleElems)
 			std::back_inserter(oneToTenDoubled), multiplyByTwo);
 
 	TestVec result;
-	make_seq(oneToTen_).map(multiplyByTwo).writeTo(std::back_inserter(result));
+	make_seq(oneToTen_).map(multiplyByTwo).writeTo(result);
 
 	ASSERT_EQ(oneToTenDoubled, result);
 }
@@ -54,7 +49,7 @@ TEST_F(MapTest, doubleThenDivideByTwo)
 	TestVec result;
 	make_seq(oneToTen_)
 		.map(multiplyByTwo).map(divideByTwo)
-		.writeTo(std::back_inserter(result));
+		.writeTo(result);
 
 	ASSERT_EQ(oneToTen_, result);
 }
@@ -71,9 +66,7 @@ TEST_F(MapTest, convertNumberToString)
 			std::back_inserter(expected), doubleToString);
 
 	StringVec result;
-	make_seq(oneToTen_).map(doubleToString).writeTo(std::back_inserter(result));
+	make_seq(oneToTen_).map(doubleToString).writeTo(result);
 
 	ASSERT_EQ(expected, result);
 }
-
-// TODO: add test that maps type T1 to type T2

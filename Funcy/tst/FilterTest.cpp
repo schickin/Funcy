@@ -24,7 +24,7 @@ protected:
 		return n % 2 == 0;
 	}
 
-	static bool greaterTen(int n)
+	static bool greaterThanTen(int n)
 	{
 		return n > 10;
 	}
@@ -39,7 +39,7 @@ TEST_F(FilterTest, filterEvenElements)
 			std::back_inserter(evenInOneToTen), isEven);
 
 	TestVec result;
-	make_seq(oneToTen_).filter(isEven).writeTo(std::back_inserter(result));
+	make_seq(oneToTen_).filter(isEven).writeTo(result);
 
 	ASSERT_EQ(evenInOneToTen, result);
 }
@@ -52,5 +52,5 @@ TEST_F(FilterTest, emptyInput)
 
 TEST_F(FilterTest, noMatches)
 {
-	ASSERT_FALSE(make_seq(oneToTen_).filter(greaterTen));
+	ASSERT_FALSE(make_seq(oneToTen_).filter(greaterThanTen));
 }

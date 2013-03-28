@@ -26,6 +26,7 @@ protected:
       seq.next();
     }
     ASSERT_TRUE(seq.empty());
+    ASSERT_FALSE(seq);
   }
 
   template <typename Iter>
@@ -44,6 +45,7 @@ protected:
         seq.next();
     }
     ASSERT_TRUE(seq.empty());
+    ASSERT_FALSE(seq);
   }
 };
 
@@ -51,9 +53,11 @@ TEST_F(IteratorSeqTest, emptySequence)
 {
   auto seq1 = make_seq(emptyVec);
   ASSERT_TRUE(seq1.empty());
+  ASSERT_FALSE(seq1);
 
   auto seq2 = make_seq(emptyVec.begin(), emptyVec.end());
   ASSERT_TRUE(seq2.empty());
+  ASSERT_FALSE(seq2);
 }
 
 TEST_F(IteratorSeqTest, oneElementSequence)
