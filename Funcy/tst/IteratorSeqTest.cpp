@@ -33,6 +33,18 @@ protected:
   {
     checkSeqAgainstRange(expected.begin(), expected.end(), seq);
   }
+
+  template <typename Seq>
+  void checkIncreasingIntSeq(int from, int to, Seq& seq)
+  {
+    for (int i = from; i <= to; ++i) {
+        ASSERT_FALSE(seq.empty());
+        ASSERT_EQ(i, seq.cval());
+        ASSERT_FALSE(seq.empty());
+        seq.next();
+    }
+    ASSERT_TRUE(seq.empty());
+  }
 };
 
 TEST_F(IteratorSeqTest, emptySequence)
@@ -72,20 +84,19 @@ TEST_F(IteratorSeqTest, copiedVectorSequence)
   checkSeqAgainstVector(smallVec, *pSeq);
 }
 
-TEST_F(IteratorSeqTest, initializationListSequence)
+TEST_F(IteratorSeqTest, initializerListSequence)
 {
   auto seq = make_seq({1, 2, 3, 4, 5});
-
-  for (int i = 1; i <= 5; ++i) {
-      ASSERT_FALSE(seq.empty());
-      ASSERT_EQ(i, seq.cval());
-      ASSERT_FALSE(seq.empty());
-      seq.next();
-  }
-  ASSERT_TRUE(seq.empty());
+  checkIncreasingIntSeq(1, 5, seq);
 }
 
-TEST_F(IteratorSeqTest, copiedInitializationListSequence)
+TEST_F(IteratorSeqTest, initializerListSequenceByConstructor)
+{
+  InitializerListSeq<int> seq = {1, 2, 3, 4, 5};
+  checkIncreasingIntSeq(1, 5, seq);
+}
+
+TEST_F(IteratorSeqTest, copiedInitializerListSequence)
 {
   typedef InitializerListSeq<int> InitializerListSeq;
   std::unique_ptr<InitializerListSeq> pSeq;
@@ -94,11 +105,5 @@ TEST_F(IteratorSeqTest, copiedInitializationListSequence)
     pSeq = std::unique_ptr<InitializerListSeq>(new InitializerListSeq(seq));
   }
 
-  for (int i = 1; i <= 5; ++i) {
-      ASSERT_FALSE(pSeq->empty());
-      ASSERT_EQ(i, pSeq->cval());
-      ASSERT_FALSE(pSeq->empty());
-      pSeq->next();
-  }
-  ASSERT_TRUE(pSeq->empty());
+  checkIncreasingIntSeq(1, 5, *pSeq);
 }
