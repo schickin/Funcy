@@ -21,13 +21,17 @@ template <typename SequenceImpl>
 class Sequence
 {
 public:
+  // must be overridden by subclass
   struct AbstractTypeMustBeOverridden;
   typedef AbstractTypeMustBeOverridden& Elem;
 
+  // must be overridden by subclass
   bool empty() const;
 
+  // must be overridden by subclass
   const Elem cval() const;
 
+  // must be overridden by subclass
   void next();
 
   operator bool() const
