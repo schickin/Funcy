@@ -9,6 +9,7 @@
 #include "funcy/sequence.h"
 
 #include <iterator>
+#include <vector>
 
 //! Wrap an STL iterator as a sequence.
 //!
@@ -41,6 +42,13 @@ public:
     ++it_;
   }
 
+protected:
+  void setIterators(const ForwardIterator& from, const ForwardIterator& to)
+  {
+    it_ = from;
+    end_ = to;
+  }
+
 private:
   ForwardIterator it_;
   ForwardIterator end_;
@@ -64,15 +72,31 @@ public:
 
 template <typename Elem>
 class InitializerListSeq :
-  public AbstractIteratorSeq<typename std::initializer_list<Elem>::const_iterator,
+  public AbstractIteratorSeq<typename std::vector<Elem>::iterator,
                              Elem>
 {
 public:
   InitializerListSeq(const std::initializer_list<Elem>& l)
   :
-    AbstractIteratorSeq<typename std::initializer_list<Elem>::const_iterator, Elem>(
-      l.begin(), l.end())
-  { }
+    AbstractIteratorSeq<typename std::vector<Elem>::iterator, Elem>(
+      seqData_.begin(), seqData_.end()),
+      seqData_(l)
+  {
+    setIterators(seqData_.begin(), seqData_.end());
+  }
+
+  InitializerListSeq(const InitializerListSeq& other) :
+    AbstractIteratorSeq<typename std::vector<Elem>::iterator, Elem>(
+      seqData_.begin(), seqData_.end()),
+      seqData_(other.seqData_)
+  {
+    setIterators(seqData_.begin(), seqData_.end());
+  }
+
+private:
+  InitializerListSeq& operator=(const InitializerListSeq&) = delete;
+
+  std::vector<Elem> seqData_;
 };
 
 //! @todo add variants that are able to take ownership of the passed collection or
