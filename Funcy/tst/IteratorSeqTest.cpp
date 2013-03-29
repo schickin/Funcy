@@ -6,47 +6,19 @@
 #include "funcy/iterator_seq.h"
 
 #include "AbstractVectorIntBasedTest.h"
+#include "SeqTestHelper.h"
 
 #include <iterator>
 #include <memory>
 #include <vector>
 
+using namespace SeqTestHelper;
+
+
 class IteratorSeqTest : public AbstractVectorIntBasedTest
 {
 protected:
   typedef IteratorSeq<TestVec::const_iterator> TestVecSeq;
-
-  template <typename Iter>
-  void checkSeqAgainstRange(Iter from, Iter to, IteratorSeq<Iter>& seq)
-  {
-    for (auto it = from; it != to; ++it) {
-      ASSERT_FALSE(seq.empty());
-      ASSERT_EQ(*it, seq.cval());
-      ASSERT_FALSE(seq.empty());
-      seq.next();
-    }
-    ASSERT_TRUE(seq.empty());
-    ASSERT_FALSE(seq);
-  }
-
-  template <typename Iter>
-  void checkSeqAgainstVector(const TestVec& expected, IteratorSeq<Iter>& seq)
-  {
-    checkSeqAgainstRange(expected.begin(), expected.end(), seq);
-  }
-
-  template <typename Seq>
-  void checkIncreasingIntSeq(int from, int to, Seq& seq)
-  {
-    for (int i = from; i <= to; ++i) {
-        ASSERT_FALSE(seq.empty());
-        ASSERT_EQ(i, seq.cval());
-        ASSERT_FALSE(seq.empty());
-        seq.next();
-    }
-    ASSERT_TRUE(seq.empty());
-    ASSERT_FALSE(seq);
-  }
 };
 
 TEST_F(IteratorSeqTest, emptySequence)
