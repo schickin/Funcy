@@ -11,6 +11,7 @@ class Sequence;
 
 #include "funcy/filter.h"
 #include "funcy/map.h"
+#include "funcy/memory.h"
 
 #include <cassert>
 #include <iterator>
@@ -96,6 +97,12 @@ public:
   MappedSeq<SequenceImpl, UnaryFunction> map(const UnaryFunction& func)
   {
     return MappedSeq<SequenceImpl, UnaryFunction>(self(), func);
+  }
+
+  template <std::size_t Capacity>
+  ConstantSizeMemorySeq<SequenceImpl, Capacity> withMemory()
+  {
+    return ConstantSizeMemorySeq<SequenceImpl, Capacity>(self());
   }
 
 protected:

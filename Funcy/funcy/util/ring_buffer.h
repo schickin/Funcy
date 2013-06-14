@@ -9,25 +9,35 @@
 #define RING_BUFFER_H_
 
 #include <array>
+#include <cassert>
+#include <cstdlib>
 #include <initializer_list>
 
 template <typename Elem, std::size_t Capacity>
 class RingBuffer {
 public:
   RingBuffer() :
-    buf_({}),
+    buf_({}), // default initialize all elements (init with yero for built-in types)
     lastIndex_(Capacity-1)
   { }
 
   const Elem& operator[](std::ptrdiff_t offset) const
-  { return buf_[(lastIndex_ + offset) % Capacity]; }
+  {
+    assert(offset <= 0);
+    assert(abs(offset) < Capacity);
+    return buf_[(lastIndex_ - offset) % Capacity];
+  }
 
   Elem& operator[](std::ptrdiff_t offset)
-  { return buf_[(lastIndex_ + offset) % Capacity]; }
+  {
+    assert(offset <= 0);
+    assert(abs(offset) < Capacity);
+    return buf_[(lastIndex_ - offset) % Capacity];
+  }
 
   void push_back(const Elem& el)
   {
-    lastIndex_ = (lastIndex_ + 1) % Capacity;
+    lastIndex_ = lastIndex_ ? lastIndex_-1 : Capacity-1;
     buf_[lastIndex_] = el;
   }
 

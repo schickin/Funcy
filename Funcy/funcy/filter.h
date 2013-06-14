@@ -6,6 +6,9 @@
 #ifndef FILTER_H_
 #define FILTER_H_
 
+template <typename InnerSequence, typename UnaryCondition>
+class FilteredSeq;
+
 #include "funcy/sequence.h"
 
 #include <type_traits>

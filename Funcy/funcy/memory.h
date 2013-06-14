@@ -6,18 +6,26 @@
 #ifndef MEMORY_H_
 #define MEMORY_H_
 
+#include <cstddef>
+
+template <typename InnerSequence, std::size_t Capacity>
+class ConstantSizeMemorySeq;
+
+
 #include "funcy/sequence.h"
+#include "funcy/util/ring_buffer.h"
 
-
-template <typename InnerSequence>
-class MemorizingSeq : public Sequence<MemorizingSeq<InnerSequence>>
+template <typename InnerSequence, std::size_t Capacity>
+class ConstantSizeMemorySeq : public Sequence<ConstantSizeMemorySeq<InnerSequence, Capacity>>
 {
 public:
     typedef typename InnerSequence::Elem Elem;
 
-    MemorizingSeq(InnerSequence& inner) :
-      inner_(inner)
-    { }
+    ConstantSizeMemorySeq(InnerSequence& inner) :
+      inner_(inner), buf_()
+    {
+      buf_.push_back(inner_.cval());
+    }
 
     bool empty() const
     {
@@ -26,26 +34,23 @@ public:
 
     const Elem& cval() const
     {
-      return buf_[bufPos_];
+      return buf_[0];
     }
 
     void next()
     {
-      bufPos_ = (bufPos_ + 1) % bufSize;
-      buf_[bufPos_] = inner_.cval();
+      inner_.next();
+      buf_.push_back(inner_.cval());
     }
 
-    const Elem& cpred(int idx) const
+    const Elem& cpred(std::ptrdiff_t idx = -1) const
     {
-      return buf_[(bufPos_ - idx) % bufSize];
+      return buf_[idx];
     }
 
 private:
-    static const int bufSize = 2;
-
     InnerSequence& inner_;
-    int bufPos_;
-    Elem[bufSize] buf_;
+    RingBuffer<Elem, Capacity> buf_;
 };
 
 #endif /* MEMORY_H_ */

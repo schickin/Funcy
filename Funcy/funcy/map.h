@@ -6,12 +6,12 @@
 #ifndef MAP_H_
 #define MAP_H_
 
+template <typename InnerSequence, typename UnaryFunction>
+class MappedSeq;
+
 #include "funcy/sequence.h"
 
 #include <type_traits>
-
-template <typename SequenceImpl>
-class Sequence;
 
 template <typename InnerSequence, typename UnaryFunction>
 class MappedSeq : public Sequence<MappedSeq<InnerSequence, UnaryFunction>> {
