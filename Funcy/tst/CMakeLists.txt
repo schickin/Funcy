@@ -6,7 +6,7 @@ set (GMOCK_INCLUDE_DIR /usr/local/include)
 
 find_library (GMOCK_LIB gmock)
 
-file (GLOB FUNCY_TEST_SOURCES *.cpp)
+file (GLOB FUNCY_TEST_SOURCES *.cpp util/*.cpp)
 
 include_directories(${FUNCY_INCLUDE_DIR} ${GMOCK_INCLUDE_DIR} .)
 
