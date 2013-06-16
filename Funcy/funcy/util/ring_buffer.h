@@ -17,7 +17,7 @@ template <typename Elem, std::size_t Capacity>
 class RingBuffer {
 public:
   RingBuffer() :
-    buf_({}), // default initialize all elements (init with yero for built-in types)
+    buf_({}), // default initialize all elements (init with zero for built-in types)
     lastIndex_(Capacity-1)
   { }
 
@@ -25,19 +25,19 @@ public:
   {
     assert(offset <= 0);
     assert(abs(offset) < Capacity);
-    return buf_[(lastIndex_ - offset) % Capacity];
+    return buf_[(lastIndex_ + Capacity + offset) % Capacity];
   }
 
   Elem& operator[](std::ptrdiff_t offset)
   {
     assert(offset <= 0);
     assert(abs(offset) < Capacity);
-    return buf_[(lastIndex_ - offset) % Capacity];
+    return buf_[(lastIndex_ + Capacity + offset) % Capacity];
   }
 
   void push_back(const Elem& el)
   {
-    lastIndex_ = lastIndex_ ? lastIndex_-1 : Capacity-1;
+    lastIndex_ = (lastIndex_ == Capacity-1) ? 0 : lastIndex_+1;
     buf_[lastIndex_] = el;
   }
 

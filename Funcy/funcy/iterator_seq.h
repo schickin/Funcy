@@ -22,6 +22,7 @@ public:
   IteratorSeq(const ForwardIterator& begin, const ForwardIterator& end)
   :
     it_(begin),
+    begin_(begin),
     end_(end)
   { }
 
@@ -40,8 +41,24 @@ public:
     ++it_;
   }
 
+  const Elem& cpred(std::size_t idx = 1) const
+  {
+    ForwardIterator myIt(it_);
+    std::advance(myIt, -idx);
+    return *myIt;
+  }
+
+  //! Warning: Performance is bad for iterators that don't provide random access
+  const Elem& operator[](std::size_t idx) const
+  {
+    ForwardIterator myIt(begin_);
+    std::advance(myIt, idx);
+    return *myIt;
+  }
+
 private:
   ForwardIterator it_;
+  const ForwardIterator begin_;
   const ForwardIterator end_;
 };
 
@@ -55,6 +72,7 @@ public:
   :
     seqData_(l),
     it_(seqData_.begin()),
+    begin_(seqData_.begin()),
     end_(seqData_.end())
   { }
 
@@ -62,6 +80,7 @@ public:
   :
     seqData_(other.seqData_),
     it_(seqData_.begin()),
+    begin_(seqData_.begin()),
     end_(seqData_.end())
   { }
 
@@ -80,12 +99,25 @@ public:
     ++it_;
   }
 
+  const Elem& cpred(std::size_t idx = 1) const
+  {
+    return *(it_ - idx);
+  }
+
+  //! Warning: Performance is bad for iterators that don't provide random access
+  const Elem& operator[](std::size_t idx) const
+  {
+    return seqData_[idx];
+  }
+
 private:
   InitializerListSeq& operator=(const InitializerListSeq&) = delete;
 
   typedef std::vector<Elem> Container;
+  // Container must be first member because the iterators reference it during construction
   Container seqData_;
   typename Container::iterator it_;
+  const typename Container::iterator begin_;
   const typename Container::iterator end_;
 
 };

@@ -15,12 +15,12 @@ namespace SeqTestHelper {
   {
     switch (end) {
     case ClosedSeq:
-      ASSERT_TRUE(seq.empty());
-      ASSERT_FALSE(seq);
+      EXPECT_TRUE(seq.empty());
+      EXPECT_FALSE(seq);
       break;
     case OpenSeq:
-      ASSERT_FALSE(seq.empty());
-      ASSERT_TRUE(seq);
+      EXPECT_FALSE(seq.empty());
+      EXPECT_TRUE(seq);
       break;
     default:
       FAIL();
@@ -31,9 +31,9 @@ namespace SeqTestHelper {
   static void checkSeqAgainstRange(Iter from, Iter to, Seq& seq, SeqEnd end = ClosedSeq)
   {
     for (auto it = from; it != to; ++it) {
-      ASSERT_FALSE(seq.empty());
-      ASSERT_EQ(*it, seq.cval());
-      ASSERT_FALSE(seq.empty());
+      EXPECT_FALSE(seq.empty());
+      EXPECT_EQ(*it, seq.cval());
+      EXPECT_FALSE(seq.empty());
       seq.next();
     }
     checkSeqEnd(seq, end);
@@ -49,9 +49,9 @@ namespace SeqTestHelper {
   static void checkIncreasingIntSeq(int from, int to, Seq& seq, SeqEnd end = ClosedSeq)
   {
     for (int i = from; i <= to; ++i) {
-        ASSERT_FALSE(seq.empty());
-        ASSERT_EQ(i, seq.cval());
-        ASSERT_FALSE(seq.empty());
+        EXPECT_FALSE(seq.empty());
+        EXPECT_EQ(i, seq.cval());
+        EXPECT_FALSE(seq.empty());
         seq.next();
     }
     checkSeqEnd(seq, end);

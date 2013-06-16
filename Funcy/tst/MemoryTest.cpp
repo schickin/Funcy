@@ -48,8 +48,8 @@ TEST_F(MemoryTest, createSequenceWithMemoryForMultiplePredecessors)
 
   for (int i = 0; i < 7; ++i) {
     EXPECT_EQ(i+1, seq.cval());
-    EXPECT_EQ(i, seq.cpred(-1));
-    EXPECT_EQ(std::max(0, i-1), seq.cpred(-2));
+    EXPECT_EQ(i, seq.cpred(1));
+    EXPECT_EQ(std::max(0, i-1), seq.cpred(2));
     seq.next();
   }
 }

@@ -43,9 +43,9 @@ public:
       buf_.push_back(inner_.cval());
     }
 
-    const Elem& cpred(std::ptrdiff_t idx = -1) const
+    const Elem& cpred(std::size_t idx = 1) const
     {
-      return buf_[idx];
+      return buf_[-idx];
     }
 
 private:

@@ -19,17 +19,43 @@ class IteratorSeqTest : public AbstractVectorIntBasedTest
 {
 protected:
   typedef IteratorSeq<TestVec::const_iterator> TestVecSeq;
+
+  template <typename Seq>
+  void checkPredecessorInSeqOneToFive(Seq& seq)
+  {
+    for (int i = 0; i < 4; ++i) {
+      seq.next();
+      EXPECT_EQ(i+1, seq.cpred());
+    }
+    for (int i = 1; i < 5; ++i) {
+      EXPECT_EQ(5-i, seq.cpred(i));
+    }
+  }
+
+  template <typename Seq>
+  void checkIndexAccessInSeqOneToFive(Seq& seq)
+  {
+    for (int i = 0; i < 5; ++i) {
+      EXPECT_EQ(i+1, seq[i]);
+    }
+    for (int i = 1; i < 4; ++i) {
+      seq.next();
+    }
+    for (int i = 0; i < 5; ++i) {
+      EXPECT_EQ(i+1, seq[i]);
+    }
+  }
 };
 
 TEST_F(IteratorSeqTest, emptySequence)
 {
   auto seq1 = make_seq(emptyVec);
-  ASSERT_TRUE(seq1.empty());
-  ASSERT_FALSE(seq1);
+  EXPECT_TRUE(seq1.empty());
+  EXPECT_FALSE(seq1);
 
   auto seq2 = make_seq(emptyVec.begin(), emptyVec.end());
-  ASSERT_TRUE(seq2.empty());
-  ASSERT_FALSE(seq2);
+  EXPECT_TRUE(seq2.empty());
+  EXPECT_FALSE(seq2);
 }
 
 TEST_F(IteratorSeqTest, oneElementSequence)
@@ -60,6 +86,20 @@ TEST_F(IteratorSeqTest, copiedVectorSequence)
   checkSeqAgainstVector(smallVec, *pSeq);
 }
 
+TEST_F(IteratorSeqTest, predecessorInVectorSequence)
+{
+  std::vector<int> v({1, 2, 3, 4, 5});
+  auto seq = make_seq(v);
+  checkPredecessorInSeqOneToFive(seq);
+}
+
+TEST_F(IteratorSeqTest, indexAccessInVectorSequence)
+{
+  std::vector<int> v({1, 2, 3, 4, 5});
+  auto seq = make_seq(v);
+  checkIndexAccessInSeqOneToFive(seq);
+}
+
 TEST_F(IteratorSeqTest, initializerListSequence)
 {
   auto seq = make_seq({1, 2, 3, 4, 5});
@@ -82,4 +122,16 @@ TEST_F(IteratorSeqTest, copiedInitializerListSequence)
   }
 
   checkIncreasingIntSeq(1, 5, *pSeq);
+}
+
+TEST_F(IteratorSeqTest, predecessorInInitializerListSequence)
+{
+  auto seq = make_seq({1, 2, 3, 4, 5});
+  checkPredecessorInSeqOneToFive(seq);
+}
+
+TEST_F(IteratorSeqTest, indexAccessInInitializerListSequence)
+{
+  auto seq = make_seq({1, 2, 3, 4, 5});
+  checkIndexAccessInSeqOneToFive(seq);
 }
