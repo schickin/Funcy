@@ -48,6 +48,11 @@ public:
       return buf_[-idx];
     }
 
+    const Elem& operator[](std::size_t idx) const
+    {
+      return buf_(idx);
+    }
+
 private:
     InnerSequence& inner_;
     RingBuffer<Elem, Capacity> buf_;

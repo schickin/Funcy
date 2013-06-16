@@ -47,6 +47,13 @@ public:
     }
   }
 
+  //! Access elements by the index of their push_back operation
+  //! (counting starts from zero)
+  const Elem& operator()(std::size_t nthPushBack) const
+  {
+    return buf_[nthPushBack % Capacity];
+  }
+
 private:
   std::array<Elem, Capacity> buf_;
   std::size_t lastIndex_;
