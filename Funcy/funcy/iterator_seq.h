@@ -13,19 +13,17 @@
 
 //! Wrap an STL iterator as a sequence.
 //!
-template <typename ForwardIterator, typename ElemType>
-class AbstractIteratorSeq : public Sequence<AbstractIteratorSeq<ForwardIterator, ElemType>>
+template <typename ForwardIterator>
+class IteratorSeq : public Sequence<IteratorSeq<ForwardIterator>>
 {
 public:
-  typedef ElemType Elem;
+  typedef typename std::iterator_traits<ForwardIterator>::value_type Elem;
 
-  AbstractIteratorSeq(const ForwardIterator& begin, const ForwardIterator& end)
+  IteratorSeq(const ForwardIterator& begin, const ForwardIterator& end)
   :
     it_(begin),
     end_(end)
   { }
-
-  // default copy constructor and assignment operator
 
   bool empty() const
   {
@@ -42,65 +40,55 @@ public:
     ++it_;
   }
 
-protected:
-  void setIterators(const ForwardIterator& from, const ForwardIterator& to)
-  {
-    it_ = from;
-    end_ = to;
-  }
-
 private:
   ForwardIterator it_;
-  ForwardIterator end_;
+  const ForwardIterator end_;
 };
 
-template <typename ForwardIterator>
-class IteratorSeq :
-  public AbstractIteratorSeq<ForwardIterator,
-                             typename std::iterator_traits<ForwardIterator>::value_type>
+template <typename ElemType>
+class InitializerListSeq : public Sequence<InitializerListSeq<ElemType>>
 {
 public:
-  typedef typename std::iterator_traits<ForwardIterator>::value_type Elem;
+  typedef ElemType Elem;
 
-  IteratorSeq(const ForwardIterator& begin, const ForwardIterator& end)
+  InitializerListSeq(const std::initializer_list<ElemType>& l)
   :
-    AbstractIteratorSeq<ForwardIterator,
-                        typename std::iterator_traits<ForwardIterator>::value_type>(
-      begin, end)
+    seqData_(l),
+    it_(seqData_.begin()),
+    end_(seqData_.end())
   { }
-};
 
-template <typename Elem>
-class InitializerListSeq :
-  public AbstractIteratorSeq<typename std::vector<Elem>::iterator,
-                             Elem>
-{
-public:
-  InitializerListSeq(const std::initializer_list<Elem>& l)
+  InitializerListSeq(const InitializerListSeq<ElemType>& other)
   :
-    AbstractIteratorSeq<typename std::vector<Elem>::iterator, Elem>(
-      seqData_.begin(), seqData_.end()),
-      seqData_(l)
+    seqData_(other.seqData_),
+    it_(seqData_.begin()),
+    end_(seqData_.end())
+  { }
+
+  bool empty() const
   {
-    setIterators(seqData_.begin(), seqData_.end());
+    return it_ == end_;
   }
 
-  InitializerListSeq(const InitializerListSeq& other) :
-    AbstractIteratorSeq<typename std::vector<Elem>::iterator, Elem>(
-      seqData_.begin(), seqData_.end()),
-      seqData_(other.seqData_)
+  const Elem& cval() const
   {
-    setIterators(seqData_.begin(), seqData_.end());
+    return *it_;
+  }
+
+  void next()
+  {
+    ++it_;
   }
 
 private:
   InitializerListSeq& operator=(const InitializerListSeq&) = delete;
 
-  std::vector<Elem> seqData_;
-};
+  typedef std::vector<Elem> Container;
+  Container seqData_;
+  typename Container::iterator it_;
+  const typename Container::iterator end_;
 
-//! @todo add variants that are able to take ownership of the passed collection or
-//! initializer list
+};
 
 //! Constructor method make_seq.
 //!
