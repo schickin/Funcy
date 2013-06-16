@@ -57,5 +57,5 @@ TEST_F(MultipleOperationsTest, doubleElemsAndThenFilterDivisibleByFour)
 		.filter(isDivisibleByFour)
 		.writeTo(std::back_inserter(result));
 
-	ASSERT_EQ(expected, result);
+	EXPECT_EQ(expected, result);
 }

@@ -41,16 +41,16 @@ TEST_F(FilterTest, filterEvenElements)
 	TestVec result;
 	make_seq(oneToTen_).filter(isEven).writeTo(result);
 
-	ASSERT_EQ(evenInOneToTen, result);
+	EXPECT_EQ(evenInOneToTen, result);
 }
 
 TEST_F(FilterTest, emptyInput)
 {
 	TestVec empty;
-	ASSERT_FALSE(make_seq(empty).filter(isEven));
+	EXPECT_FALSE(make_seq(empty).filter(isEven));
 }
 
 TEST_F(FilterTest, noMatches)
 {
-	ASSERT_FALSE(make_seq(oneToTen_).filter(greaterThanTen));
+	EXPECT_FALSE(make_seq(oneToTen_).filter(greaterThanTen));
 }

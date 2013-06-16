@@ -41,7 +41,7 @@ TEST_F(MapTest, doubleElems)
 	TestVec result;
 	make_seq(oneToTen_).map(multiplyByTwo).writeTo(result);
 
-	ASSERT_EQ(oneToTenDoubled, result);
+	EXPECT_EQ(oneToTenDoubled, result);
 }
 
 TEST_F(MapTest, doubleThenDivideByTwo)
@@ -51,7 +51,7 @@ TEST_F(MapTest, doubleThenDivideByTwo)
 		.map(multiplyByTwo).map(divideByTwo)
 		.writeTo(result);
 
-	ASSERT_EQ(oneToTen_, result);
+	EXPECT_EQ(oneToTen_, result);
 }
 
 TEST_F(MapTest, convertNumberToString)
@@ -68,5 +68,5 @@ TEST_F(MapTest, convertNumberToString)
 	StringVec result;
 	make_seq(oneToTen_).map(doubleToString).writeTo(result);
 
-	ASSERT_EQ(expected, result);
+	EXPECT_EQ(expected, result);
 }

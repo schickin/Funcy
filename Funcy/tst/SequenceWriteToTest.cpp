@@ -20,7 +20,7 @@ TEST_F(SequenceWriteToTest, writeToOutputIteratorOnCollection)
   TestVec v;
   make_seq(smallVec).writeTo(std::back_inserter(v));
 
-  ASSERT_EQ(smallVec, v);
+  EXPECT_EQ(smallVec, v);
 }
 
 TEST_F(SequenceWriteToTest, writeToOutputIteratorOnStream)
@@ -28,7 +28,7 @@ TEST_F(SequenceWriteToTest, writeToOutputIteratorOnStream)
   std::ostringstream ostr;
   make_seq(smallVec).writeTo(std::ostream_iterator<TestVec::value_type>(ostr));
 
-  ASSERT_EQ(vecToString(smallVec), ostr.str());
+  EXPECT_EQ(vecToString(smallVec), ostr.str());
 }
 
 TEST_F(SequenceWriteToTest, writeToOutputStream)
@@ -36,7 +36,7 @@ TEST_F(SequenceWriteToTest, writeToOutputStream)
   std::ostringstream ostr;
   make_seq(smallVec).writeTo(ostr);
 
-  ASSERT_EQ(vecToString(smallVec), ostr.str());
+  EXPECT_EQ(vecToString(smallVec), ostr.str());
 }
 
 TEST_F(SequenceWriteToTest, writeToOutputStreamWithDelim)
@@ -44,7 +44,7 @@ TEST_F(SequenceWriteToTest, writeToOutputStreamWithDelim)
   std::ostringstream ostr;
   make_seq(smallVec).writeTo(ostr, ",");
 
-  ASSERT_EQ(vecToString(smallVec, ","), ostr.str());
+  EXPECT_EQ(vecToString(smallVec, ","), ostr.str());
 }
 
 TEST_F(SequenceWriteToTest, writeToCollection)
@@ -52,5 +52,5 @@ TEST_F(SequenceWriteToTest, writeToCollection)
   TestVec v;
   make_seq(smallVec).writeTo(v);
 
-  ASSERT_EQ(smallVec, v);
+  EXPECT_EQ(smallVec, v);
 }
