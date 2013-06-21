@@ -7,7 +7,7 @@
 #define SEQUENCE_H_
 
 template <typename SequenceImpl>
-class Sequence;
+class SequenceCRTP;
 
 #include "funcy/filter.h"
 #include "funcy/map.h"
@@ -19,7 +19,7 @@ class Sequence;
 #include <type_traits>
 
 template <typename SequenceImpl>
-class Sequence
+class SequenceCRTP
 {
 public:
   // must be overridden by subclass
@@ -115,6 +115,47 @@ protected:
   {
     return static_cast<const SequenceImpl&>(*this);
   }
+};
+
+class Sequence : public SequenceCRTP<Sequence>
+{
+public:
+
+  Sequence() :
+    emptyPtr_(nullptr),
+    cvalPtr_(nullptr),
+    nextPtr_(nullptr)
+  { }
+
+
+  bool empty() const
+  {
+    assert(emptyPtr_);
+    return emptyPtr_();
+  }
+
+  const Elem cval() const
+  {
+    assert(cvalPtr_);
+    return cvalPtr_();
+  }
+
+  void next()
+  {
+    assert(nextPtr_);
+    return nextPtr_();
+  }
+
+private:
+
+  typedef bool (*EmptyFuncPtr)();
+  typedef const Elem (*CValFuncPtr)();
+  typedef void (*NextFuncPtr)();
+
+  EmptyFuncPtr emptyPtr_;
+  CValFuncPtr cvalPtr_;
+  NextFuncPtr nextPtr_;
+
 };
 
 #endif /* SEQUENCE_H_ */

@@ -14,7 +14,7 @@
 //! Wrap an STL iterator as a sequence.
 //!
 template <typename ForwardIterator>
-class IteratorSeq : public Sequence<IteratorSeq<ForwardIterator>>
+class IteratorSeq : public SequenceCRTP<IteratorSeq<ForwardIterator>>
 {
 public:
   typedef typename std::iterator_traits<ForwardIterator>::value_type Elem;
@@ -63,7 +63,7 @@ private:
 };
 
 template <typename ElemType>
-class InitializerListSeq : public Sequence<InitializerListSeq<ElemType>>
+class InitializerListSeq : public SequenceCRTP<InitializerListSeq<ElemType>>
 {
 public:
   typedef ElemType Elem;

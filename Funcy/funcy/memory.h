@@ -16,7 +16,7 @@ class ConstantSizeMemorySeq;
 #include "funcy/util/ring_buffer.h"
 
 template <typename InnerSequence, std::size_t Capacity>
-class ConstantSizeMemorySeq : public Sequence<ConstantSizeMemorySeq<InnerSequence, Capacity>>
+class ConstantSizeMemorySeq : public SequenceCRTP<ConstantSizeMemorySeq<InnerSequence, Capacity>>
 {
 public:
     typedef typename InnerSequence::Elem Elem;

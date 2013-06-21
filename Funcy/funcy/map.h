@@ -14,7 +14,7 @@ class MappedSeq;
 #include <type_traits>
 
 template <typename InnerSequence, typename UnaryFunction>
-class MappedSeq : public Sequence<MappedSeq<InnerSequence, UnaryFunction>> {
+class MappedSeq : public SequenceCRTP<MappedSeq<InnerSequence, UnaryFunction>> {
 public:
   typedef decltype(
       std::declval<UnaryFunction>()(
