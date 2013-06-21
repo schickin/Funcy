@@ -20,10 +20,14 @@ template <typename InnerSequence, typename UnaryFunction>
 class MappedSeq;
 template <typename InnerSequence, std::size_t Capacity>
 class ConstantSizeMemorySeq;
+template <typename InnerSeq1, typename InnerSeq2>
+class ConcatenatedSequence;
 
+class SequenceTag
+{ };
 
 template <typename SequenceImpl>
-class SequenceCRTP
+class SequenceCRTP : public SequenceTag
 {
 public:
   // must be overridden by subclass
@@ -120,5 +124,6 @@ protected:
     return static_cast<const SequenceImpl&>(*this);
   }
 };
+
 
 #endif /* SEQUENCE_CRTP_H_ */
