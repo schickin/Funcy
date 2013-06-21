@@ -9,7 +9,12 @@
 template <typename SequenceImpl>
 class SequenceCRTP;
 
-#include "funcy/filter.h"
+// Forward declarations of all supported sequence types
+template <typename InnerSequence, typename UnaryCondition>
+class FilteredSeq;
+template <typename SequenceImpl>
+class UniqueCondition;
+
 #include "funcy/map.h"
 #include "funcy/memory.h"
 

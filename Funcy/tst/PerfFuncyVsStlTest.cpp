@@ -10,6 +10,7 @@
  *      Author: schickin
  */
 
+#include "funcy/filter.h"
 #include "funcy/iterator_seq.h"
 
 #include "gtest/gtest.h"
