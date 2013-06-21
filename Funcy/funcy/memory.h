@@ -12,7 +12,7 @@ template <typename InnerSequence, std::size_t Capacity>
 class ConstantSizeMemorySeq;
 
 
-#include "funcy/sequence.h"
+#include "funcy/impl/sequence_crtp.h"
 #include "funcy/util/ring_buffer.h"
 
 template <typename InnerSequence, std::size_t Capacity>

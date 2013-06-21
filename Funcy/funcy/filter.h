@@ -9,7 +9,7 @@
 template <typename InnerSequence, typename UnaryCondition>
 class FilteredSeq;
 
-#include "funcy/sequence.h"
+#include "funcy/impl/sequence_crtp.h"
 
 #include <type_traits>
 #include <utility>

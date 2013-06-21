@@ -6,7 +6,7 @@
 #ifndef ITERATOR_SEQ_H_
 #define ITERATOR_SEQ_H_
 
-#include "funcy/sequence.h"
+#include "funcy/impl/sequence_crtp.h"
 
 #include <iterator>
 #include <vector>

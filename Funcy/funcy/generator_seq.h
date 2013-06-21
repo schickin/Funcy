@@ -7,7 +7,7 @@
 #define GENERATOR_SEQ_H_
 
 
-#include "funcy/sequence.h"
+#include "funcy/impl/sequence_crtp.h"
 
 #include <functional>
 #include <type_traits>

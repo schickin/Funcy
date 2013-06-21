@@ -9,7 +9,7 @@
 template <typename InnerSequence, typename UnaryFunction>
 class MappedSeq;
 
-#include "funcy/sequence.h"
+#include "funcy/impl/sequence_crtp.h"
 
 #include <type_traits>
 
