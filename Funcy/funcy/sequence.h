@@ -6,8 +6,10 @@
 #ifndef SEQUENCE_H_
 #define SEQUENCE_H_
 
-template <typename SequenceImpl>
-class SequenceCRTP;
+#include <cassert>
+#include <iterator>
+#include <ostream>
+#include <type_traits>
 
 // Forward declarations of all supported sequence types
 template <typename InnerSequence, typename UnaryCondition>
@@ -16,14 +18,9 @@ template <typename SequenceImpl>
 class UniqueCondition;
 template <typename InnerSequence, typename UnaryFunction>
 class MappedSeq;
+template <typename InnerSequence, std::size_t Capacity>
+class ConstantSizeMemorySeq;
 
-
-#include "funcy/memory.h"
-
-#include <cassert>
-#include <iterator>
-#include <ostream>
-#include <type_traits>
 
 template <typename SequenceImpl>
 class SequenceCRTP
