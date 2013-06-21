@@ -12,6 +12,7 @@
 
 #include "funcy/filter.h"
 #include "funcy/iterator_seq.h"
+#include "funcy/map.h"
 
 #include "gtest/gtest.h"
 

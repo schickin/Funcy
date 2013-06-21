@@ -4,6 +4,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "funcy/iterator_seq.h"
+#include "funcy/map.h"
 
 #include "gtest/gtest.h"
 

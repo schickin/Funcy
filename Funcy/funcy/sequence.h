@@ -14,8 +14,10 @@ template <typename InnerSequence, typename UnaryCondition>
 class FilteredSeq;
 template <typename SequenceImpl>
 class UniqueCondition;
+template <typename InnerSequence, typename UnaryFunction>
+class MappedSeq;
 
-#include "funcy/map.h"
+
 #include "funcy/memory.h"
 
 #include <cassert>
