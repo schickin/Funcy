@@ -10,6 +10,8 @@
 
 #include "funcy/impl/sequence_crtp.h"
 
+#include <type_traits>
+
 //! @todo use variadic template
 
 template <typename InnerSeq1, typename InnerSeq2>
@@ -17,7 +19,8 @@ class ConcatenatedSequence :
   public SequenceCRTP<ConcatenatedSequence<InnerSeq1, InnerSeq2>>
 {
 public:
-  typedef typename InnerSeq1::Elem Elem;
+  typedef typename std::common_type<typename InnerSeq1::Elem,
+                                    typename InnerSeq2::Elem>::type Elem;
 
   ConcatenatedSequence(const InnerSeq1& inner1, const InnerSeq2& inner2) :
     innerSeq1_(inner1),
@@ -29,7 +32,7 @@ public:
     return innerSeq1_.empty() && innerSeq2_.empty();
   }
 
-  const Elem cval() const
+  Elem cval() const
   {
     return innerSeq1_.empty() ? innerSeq2_.cval() : innerSeq1_.cval();
   }

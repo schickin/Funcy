@@ -103,13 +103,13 @@ TEST_F(IteratorSeqTest, indexAccessInVectorSequence)
 TEST_F(IteratorSeqTest, initializerListSequence)
 {
   auto seq = make_seq({1, 2, 3, 4, 5});
-  checkIncreasingIntSeq(1, 5, seq);
+  checkIncreasingSeq(1, 5, seq);
 }
 
 TEST_F(IteratorSeqTest, initializerListSequenceByConstructor)
 {
   InitializerListSeq<int> seq = {1, 2, 3, 4, 5};
-  checkIncreasingIntSeq(1, 5, seq);
+  checkIncreasingSeq(1, 5, seq);
 }
 
 TEST_F(IteratorSeqTest, copiedInitializerListSequence)
@@ -121,7 +121,7 @@ TEST_F(IteratorSeqTest, copiedInitializerListSequence)
     pSeq = std::unique_ptr<InitializerListSeq>(new InitializerListSeq(seq));
   }
 
-  checkIncreasingIntSeq(1, 5, *pSeq);
+  checkIncreasingSeq(1, 5, *pSeq);
 }
 
 TEST_F(IteratorSeqTest, predecessorInInitializerListSequence)

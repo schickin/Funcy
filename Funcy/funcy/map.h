@@ -32,7 +32,7 @@ public:
     return inner_.empty();
   }
 
-  const Elem cval() const
+  Elem cval() const
   {
     return func_(inner_.cval());
   }

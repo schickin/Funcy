@@ -23,14 +23,14 @@ TEST_F(GeneratorSeqTest, counterSeqWithLambda)
 {
   GeneratorSeq<int> seq([](int x) { return x+1; });
 
-  checkIncreasingIntSeq(0, 5, seq, OpenSeq);
+  checkIncreasingSeq(0, 5, seq, OpenSeq);
 }
 
 TEST_F(GeneratorSeqTest, counterSeqWithFunction)
 {
   GeneratorSeq<int> seq(increment);
 
-  checkIncreasingIntSeq(0, 5, seq, OpenSeq);
+  checkIncreasingSeq(0, 5, seq, OpenSeq);
 }
 
 TEST_F(GeneratorSeqTest, counterSeqWithFunctionPointer)
@@ -38,21 +38,21 @@ TEST_F(GeneratorSeqTest, counterSeqWithFunctionPointer)
   int (*pFunc)(int) = increment;
   GeneratorSeq<int> seq(pFunc);
 
-  checkIncreasingIntSeq(0, 5, seq, OpenSeq);
+  checkIncreasingSeq(0, 5, seq, OpenSeq);
 }
 
 TEST_F(GeneratorSeqTest, generateSeqWithLambda)
 {
   auto seq = generate_seq<int>([](int x) { return x+1; });
 
-  checkIncreasingIntSeq(0, 5, seq, OpenSeq);
+  checkIncreasingSeq(0, 5, seq, OpenSeq);
 }
 
 TEST_F(GeneratorSeqTest, generateSeqWithFunction)
 {
   auto seq = generate_seq<int>(increment);
 
-  checkIncreasingIntSeq(0, 5, seq, OpenSeq);
+  checkIncreasingSeq(0, 5, seq, OpenSeq);
 }
 
 TEST_F(GeneratorSeqTest, generateSeqWithFunctionPointer)
@@ -60,12 +60,12 @@ TEST_F(GeneratorSeqTest, generateSeqWithFunctionPointer)
   int (*pFunc)(int) = increment;
   auto seq = generate_seq<int>(pFunc);
 
-  checkIncreasingIntSeq(0, 5, seq, OpenSeq);
+  checkIncreasingSeq(0, 5, seq, OpenSeq);
 }
 
 TEST_F(GeneratorSeqTest, generateSeqWithLambdaAndInitialValue)
 {
   auto seq = generate_seq<int>([](int x) { return x+1; }, 10);
 
-  checkIncreasingIntSeq(10, 15, seq, OpenSeq);
+  checkIncreasingSeq(10, 15, seq, OpenSeq);
 }

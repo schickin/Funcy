@@ -27,11 +27,22 @@ TEST_F(ConcatenatedSeqTest, concatenateTwoSimpleSequences)
 
   auto conc = seq1 << seq2;
 
-  checkIncreasingIntSeq(1, 4, conc);
+  checkIncreasingSeq(1, 4, conc);
 }
 
-//! @todo doesn't work yet because ConcatenatedSequence cannot take copies of the
-//! given sequences and thus cannot work with temporary objects.
+TEST_F(ConcatenatedSeqTest, concatenateTwoSequencesOfDifferentTypes)
+{
+  auto seq1 = make_seq({1, 2});
+  auto seq2 = make_seq({3.0, 4.0});
+
+  auto conc = seq1 << seq2;
+
+  static_assert(std::is_same<decltype(conc.cval()), double>::value,
+                "common type of concated sequences must be double");
+
+  checkIncreasingSeq(1.0, 4.0, conc);
+}
+
 TEST_F(ConcatenatedSeqTest, concatenateThreeSimpleSequences)
 {
   auto seq1 = make_seq({1, 2});
@@ -40,5 +51,40 @@ TEST_F(ConcatenatedSeqTest, concatenateThreeSimpleSequences)
 
   auto conc = seq1 << seq2 << seq3;
 
-  checkIncreasingIntSeq(1, 6, conc);
+  checkIncreasingSeq(1, 6, conc);
+}
+
+TEST_F(ConcatenatedSeqTest, concatenateThreeUntypedSequences)
+{
+  Sequence<int> seq1 = make_seq({1, 2});
+  Sequence<int> seq2 = make_seq({3, 4});
+  Sequence<int> seq3 = make_seq({5, 6});
+
+  Sequence<int> conc = seq1 << seq2 << seq3;
+
+  checkIncreasingSeq(1, 6, conc);
+}
+
+TEST_F(ConcatenatedSeqTest, modificationOfOriginalSequenceDoesntModifyConcatenatedSequence)
+{
+  auto seq1 = make_seq({1, 2});
+  auto seq2 = make_seq({3, 4});
+
+  auto conc = seq1 << seq2;
+
+  checkIncreasingSeq(1, 2, seq1);
+  checkIncreasingSeq(3, 4, seq2);
+  checkIncreasingSeq(1, 4, conc);
+}
+
+TEST_F(ConcatenatedSeqTest, modificationOfOriginalUntypedSequenceDoesntModifyConcatenatedSequence)
+{
+  Sequence<int> seq1 = make_seq({1, 2});
+  Sequence<int> seq2 = make_seq({3, 4});
+
+  Sequence<int> conc = seq1 << seq2;
+
+  checkIncreasingSeq(1, 2, seq1);
+  checkIncreasingSeq(3, 4, seq2);
+  checkIncreasingSeq(1, 4, conc);
 }

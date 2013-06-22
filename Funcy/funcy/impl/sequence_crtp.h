@@ -38,7 +38,7 @@ public:
   bool empty() const;
 
   // must be overridden by subclass
-  const Elem cval() const;
+  Elem cval() const;
 
   // must be overridden by subclass
   void next();

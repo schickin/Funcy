@@ -45,10 +45,11 @@ namespace SeqTestHelper {
     checkSeqAgainstRange(expected.begin(), expected.end(), seq);
   }
 
-  template <typename Seq>
-  static void checkIncreasingIntSeq(int from, int to, Seq& seq, SeqEnd end = ClosedSeq)
+  template <typename Elem, typename Seq>
+  static void checkIncreasingSeq(const Elem& from, const Elem& to, Seq& seq,
+                                 SeqEnd end = ClosedSeq)
   {
-    for (int i = from; i <= to; ++i) {
+    for (Elem i = from; i <= to; ++i) {
         EXPECT_FALSE(seq.empty());
         EXPECT_EQ(i, seq.cval());
         EXPECT_FALSE(seq.empty());
