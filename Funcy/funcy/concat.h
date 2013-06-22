@@ -19,7 +19,7 @@ class ConcatenatedSequence :
 public:
   typedef typename InnerSeq1::Elem Elem;
 
-  ConcatenatedSequence(InnerSeq1& inner1, InnerSeq2& inner2) :
+  ConcatenatedSequence(const InnerSeq1& inner1, const InnerSeq2& inner2) :
     innerSeq1_(inner1),
     innerSeq2_(inner2)
   { }
@@ -45,8 +45,8 @@ public:
   }
 
 private:
-  InnerSeq1& innerSeq1_;
-  InnerSeq2& innerSeq2_;
+  InnerSeq1 innerSeq1_;
+  InnerSeq2 innerSeq2_;
 };
 
 template <typename SequenceImpl1, typename SequenceImpl2>
@@ -57,7 +57,7 @@ typename std::enable_if<std::is_base_of<SequenceTag, SequenceImpl1>::value
                         ConcatenatedSequence<SequenceImpl1, SequenceImpl2>>::type
 operator<<
 (
-  SequenceImpl1& seq1, SequenceImpl2& seq2
+  const SequenceImpl1& seq1, const SequenceImpl2& seq2
 )
 {
   return ConcatenatedSequence<SequenceImpl1, SequenceImpl2>(seq1, seq2);
