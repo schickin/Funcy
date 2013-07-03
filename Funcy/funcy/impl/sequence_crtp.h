@@ -8,8 +8,10 @@
 
 #include <cassert>
 #include <iterator>
+#include <vector>
 #include <ostream>
 #include <type_traits>
+
 
 // Forward declarations of all supported sequence types
 template <typename InnerSequence, typename UnaryCondition>
@@ -26,14 +28,10 @@ class ConcatenatedSequence;
 class SequenceTag
 { };
 
-template <typename SequenceImpl>
+template <typename SequenceImpl, typename Elem>
 class SequenceCRTP : public SequenceTag
 {
 public:
-  // must be overridden by subclass
-  struct AbstractTypeMustBeOverridden;
-  typedef AbstractTypeMustBeOverridden& Elem;
-
   // must be overridden by subclass
   bool empty() const;
 
@@ -79,11 +77,19 @@ public:
 
   //! @}
 
+  std::vector<Elem> toVec()
+  {
+    std::vector<Elem> result;
+    self().writeTo(result);
+    return result;
+  }
+
   // TODO: write tests
   std::size_t count()
   {
     std::size_t result(0);
-    while (!self().empty()) {
+    while (!self().empty())
+    {
         ++result;
         self().next();
     }
@@ -111,6 +117,33 @@ public:
   ConstantSizeMemorySeq<SequenceImpl, Capacity> withMemory()
   {
     return ConstantSizeMemorySeq<SequenceImpl, Capacity>(self());
+  }
+
+  template <typename OtherSeq>
+  int compareWith(OtherSeq& other)
+  {
+    while (!self().empty() && !other.empty())
+    {
+      if (self().cval() < other.cval())
+      {
+        return -1;
+      }
+      if (other.cval() < self().cval())
+      {
+        return 1;
+      }
+      self().next();
+      other.next();
+    }
+    if (self().empty())
+    {
+      if (other.empty())
+      {
+        return 0;
+      }
+      return -1;
+    }
+    return 1;
   }
 
 protected:

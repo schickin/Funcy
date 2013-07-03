@@ -16,7 +16,9 @@
 
 template <typename InnerSeq1, typename InnerSeq2>
 class ConcatenatedSequence :
-  public SequenceCRTP<ConcatenatedSequence<InnerSeq1, InnerSeq2>>
+  public SequenceCRTP<ConcatenatedSequence<InnerSeq1, InnerSeq2>,
+                      typename std::common_type<typename InnerSeq1::Elem,
+                                                typename InnerSeq2::Elem>::type>
 {
 public:
   typedef typename std::common_type<typename InnerSeq1::Elem,

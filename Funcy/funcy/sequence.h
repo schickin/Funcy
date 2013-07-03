@@ -11,7 +11,7 @@
 #include "funcy/impl/sequence_crtp.h"
 
 template <typename ElemType>
-class Sequence : public SequenceCRTP<Sequence<ElemType> >
+class Sequence : public SequenceCRTP<Sequence<ElemType>, ElemType>
 {
 public:
   typedef ElemType Elem;

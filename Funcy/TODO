@@ -1,11 +1,9 @@
 TODO list for Funcy project
 
 - Add dynamically generated sequences that are suitable for recursive definitions
-- Implement memoization
 - Test copying of filtered and mapped sequences
 - Finalize and test implementation of unique sequences
 - Implement flatMap
-- Implement concatenation of sequences
 - Implement (arithmetic) operations on sequences (more generally, map two sequences
   to one)
 - Implement zipping and unzipping

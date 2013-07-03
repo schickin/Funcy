@@ -15,7 +15,9 @@ class FilteredSeq;
 #include <utility>
 
 template <typename InnerSequence, typename UnaryCondition>
-class FilteredSeq : public SequenceCRTP<FilteredSeq<InnerSequence, UnaryCondition>> {
+class FilteredSeq : public SequenceCRTP<FilteredSeq<InnerSequence, UnaryCondition>,
+                                        typename InnerSequence::Elem>
+{
 public:
   typedef typename InnerSequence::Elem Elem;
 
