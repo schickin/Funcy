@@ -16,8 +16,13 @@ class SeqDef
 public:
   typedef std::function<SeqType()> DefiningFunc;
 
-  SeqDef()
-  { };
+  SeqDef() :
+    defFunc_()
+  { }
+
+  SeqDef(const DefiningFunc& defFunc) :
+    defFunc_(defFunc)
+  { }
 
   SeqDef& operator=(const DefiningFunc& defFunc)
   {
@@ -32,5 +37,6 @@ private:
   DefiningFunc defFunc_;
 };
 
+//! @todo add factory function def_seq(Callable)
 
 #endif /* SEQ_DEF_H_ */
