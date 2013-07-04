@@ -13,26 +13,31 @@
 
 class SeqDefTest : public ::testing::Test
 {
-
+protected:
+  typedef IteratorSeq<std::vector<int>::const_iterator> VecSeq;
+  static const std::vector<int> oneTwoThree;
 };
+
+const std::vector<int> SeqDefTest::oneTwoThree({1, 2, 3});
 
 TEST_F(SeqDefTest, defineSequenceBasedOnIteratorSequence)
 {
-  const std::vector<int> v = {1, 2, 3};
-  typedef IteratorSeq<std::vector<int>::const_iterator> VecSeq;
+  SeqDef<VecSeq> sdef([&] { return make_seq(oneTwoThree); });
 
-  SeqDef<VecSeq> sdef([&] { return make_seq(v); });
-
-  EXPECT_EQ(v, sdef.newInstance().toVec());
+  EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
 }
 
 TEST_F(SeqDefTest, defineSequenceBasedOnIteratorSequenceWithAssignment)
 {
-  const std::vector<int> v = {1, 2, 3};
-  typedef IteratorSeq<std::vector<int>::const_iterator> VecSeq;
-
   SeqDef<VecSeq> sdef;
-  sdef = [&] { return make_seq(v); };
+  sdef = [&] { return make_seq(oneTwoThree); };
 
-  EXPECT_EQ(v, sdef.newInstance().toVec());
+  EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
+}
+
+TEST_F(SeqDefTest, defineSequenceUsingFactoryFunction)
+{
+  auto sdef = def_seq([&] { return make_seq(oneTwoThree); });
+
+  EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
 }

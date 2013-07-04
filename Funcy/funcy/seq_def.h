@@ -9,6 +9,7 @@
 #define SEQ_DEF_H_
 
 #include <functional>
+#include <type_traits>
 
 template <typename SeqType>
 class SeqDef
@@ -37,6 +38,10 @@ private:
   DefiningFunc defFunc_;
 };
 
-//! @todo add factory function def_seq(Callable)
+template <typename DefiningFunc>
+SeqDef<typename std::result_of<DefiningFunc()>::type> def_seq(const DefiningFunc& defFunc)
+{
+  return SeqDef<typename std::result_of<DefiningFunc()>::type>(defFunc);
+}
 
 #endif /* SEQ_DEF_H_ */
