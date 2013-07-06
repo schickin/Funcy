@@ -57,8 +57,18 @@ TEST_F(UntypedSequenceTest, defaultCopyConstructor)
 
   Sequence<int> seq(otherSeq);
   Sequence<int> copiedSeq(seq);
+  seq.reset();
 
   checkOneElementSequence(1, copiedSeq);
+};
+
+TEST_F(UntypedSequenceTest, copyFromSequenceWithElemConversion)
+{
+  Sequence<double> seq = make_seq({10.5});
+  Sequence<int> copiedSeq(seq);
+  seq.reset();
+
+  checkOneElementSequence(10, copiedSeq);
 };
 
 TEST_F(UntypedSequenceTest, defaultAssignmentOperator)
@@ -70,18 +80,45 @@ TEST_F(UntypedSequenceTest, defaultAssignmentOperator)
   EXPECT_FALSE(copiedSeq.initialized());
 
   copiedSeq = seq;
+  seq.reset();
 
   checkOneElementSequence('a', copiedSeq);
 };
 
-TEST_F(UntypedSequenceTest, assignmentFromOtherSequence)
+TEST_F(UntypedSequenceTest, assignmentFromSequencewithElemConversion)
 {
-  auto otherSeq = make_seq({10});
+  Sequence<double> otherSeq = make_seq({10.5});
 
   Sequence<int> seq;
   EXPECT_FALSE(seq.initialized());
 
   seq = otherSeq;
+
+  checkOneElementSequence(10, seq);
+};
+
+TEST_F(UntypedSequenceTest, assignmentFromTypedSequence)
+{
+  Sequence<int> seq;
+  EXPECT_FALSE(seq.initialized());
+
+  {
+    auto otherSeq = make_seq({10});
+    seq = otherSeq;
+  }
+
+  checkOneElementSequence(10, seq);
+};
+
+TEST_F(UntypedSequenceTest, assignmentFromTypedSequenceWithElemConversion)
+{
+  Sequence<int> seq;
+  EXPECT_FALSE(seq.initialized());
+
+  {
+    auto otherSeq = make_seq({10.5});
+    seq = otherSeq;
+  }
 
   checkOneElementSequence(10, seq);
 };

@@ -6,7 +6,9 @@
  */
 
 #include "funcy/seq_def.h"
+#include "funcy/sequence.h"
 
+#include "funcy/concat.h"
 #include "funcy/iterator_seq.h"
 
 #include "gtest/gtest.h"
@@ -20,24 +22,96 @@ protected:
 
 const std::vector<int> SeqDefTest::oneTwoThree({1, 2, 3});
 
-TEST_F(SeqDefTest, defineSequenceBasedOnIteratorSequence)
+TEST_F(SeqDefTest, defineTypedSequenceFromDefiningFunction)
 {
-  SeqDef<VecSeq> sdef([&] { return make_seq(oneTwoThree); });
+  TypedSeqDef<VecSeq> sdef([&] { return make_seq(oneTwoThree); });
 
   EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
 }
 
-TEST_F(SeqDefTest, defineSequenceBasedOnIteratorSequenceWithAssignment)
+TEST_F(SeqDefTest, defineTypedSequenceWithAssignmentOfDefiningFunction)
 {
-  SeqDef<VecSeq> sdef;
+  TypedSeqDef<VecSeq> sdef;
   sdef = [&] { return make_seq(oneTwoThree); };
 
   EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
 }
 
-TEST_F(SeqDefTest, defineSequenceUsingFactoryFunction)
+TEST_F(SeqDefTest, defineTypedSequenceUsingFactoryFunction)
 {
   auto sdef = def_seq([&] { return make_seq(oneTwoThree); });
 
   EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
+}
+
+TEST_F(SeqDefTest, copyOfTypedSequence)
+{
+  TypedSeqDef<VecSeq> sdef;
+  {
+    auto innerSDef = def_seq([&] { return make_seq(oneTwoThree); });
+    sdef = innerSDef;
+  }
+
+  EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
+}
+
+TEST_F(SeqDefTest, defineSequenceFromDefiningFunction)
+{
+  SeqDef<int> sdef([&] { return make_seq(oneTwoThree); });
+
+  EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
+}
+
+TEST_F(SeqDefTest, defineSequenceWithAssignmentOfDefiningFunction)
+{
+  SeqDef<int> sdef;
+  sdef = [&] { return make_seq(oneTwoThree); };
+
+  EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
+}
+
+TEST_F(SeqDefTest, copyOfTypedSequenceToUntypedSequence)
+{
+  TypedSeqDef<VecSeq> innerSDef = def_seq([&] { return make_seq(oneTwoThree); });
+  SeqDef<int> sdef(innerSDef);
+
+  EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
+}
+
+TEST_F(SeqDefTest, assignmentOfTypedSequenceToUntypedSequence)
+{
+  SeqDef<int> sdef;
+  {
+    auto innerSDef = def_seq([&] { return make_seq(oneTwoThree); });
+    sdef = innerSDef;
+  }
+
+  EXPECT_EQ(oneTwoThree, sdef.newInstance().toVec());
+}
+
+TEST_F(SeqDefTest, assignToUntypedSequence)
+{
+  auto sdef = def_seq([&] { return make_seq(oneTwoThree); });
+
+  Sequence<int> seq;
+
+  for (int i = 0; i < 2; ++i)
+  {
+    seq = sdef;
+    EXPECT_EQ(oneTwoThree, seq.toVec());
+  }
+}
+
+TEST_F(SeqDefTest, recursiveSequenceDef)
+{
+  SeqDef<int> sdef;
+  sdef = [&] { return make_seq({1}) << sdef.lazy(); };
+
+  Sequence<int> seq = sdef.newInstance();
+  for (int i = 0; i < 5; ++i)
+  {
+    EXPECT_FALSE(seq.empty());
+    EXPECT_EQ(1, seq.cval());
+    seq.next();
+  }
 }
