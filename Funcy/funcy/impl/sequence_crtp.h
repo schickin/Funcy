@@ -84,7 +84,42 @@ public:
     return result;
   }
 
-  // TODO: write tests
+  //! Accumulate values in sequence
+  //!
+  //! @{
+
+  template <typename Val, typename Accumulator>
+  Val accumulate(const Accumulator& acc, const Val& initialVal)
+  {
+    Val result(initialVal);
+    while (!self().empty())
+    {
+        acc(result, self().cval());
+        self().next();
+    }
+    return result;
+  }
+
+  template <typename Accumulator>
+  Elem accumulate(const Accumulator& acc)
+  {
+    return accumulate(acc, Elem());
+  }
+
+  template <typename Val=Elem>
+  Val sum(const Val& zero=Val())
+  {
+    return accumulate([] (Val& partialSum, const Val& currVal) { partialSum += currVal; },
+                      zero);
+  }
+
+  template <typename Val=Elem>
+  Val prod(const Val& one=Val(1))
+  {
+    return accumulate([] (Val& partialSum, const Val& currVal) { partialSum *= currVal; },
+                      one);
+  }
+
   std::size_t count()
   {
     std::size_t result(0);
@@ -95,6 +130,8 @@ public:
     }
     return result;
   }
+
+  //! @}
 
   template <typename UnaryPredicate>
   FilteredSeq<SequenceImpl, UnaryPredicate> filter(const UnaryPredicate& predicate)

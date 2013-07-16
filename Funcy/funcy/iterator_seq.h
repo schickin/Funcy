@@ -76,6 +76,20 @@ public:
     end_(seqData_.end())
   { }
 
+  //! Initialize the sequence form an initializer list the elements of which can be
+  //! converted to the element type of the sequence.
+  // So far, this constructor wasn't needed because the types of the initializer lists
+  // are properly converted when calling make_seq
+  // (cf. test initializerListSequenceWithTypeConversion).
+//  template <typename InitialElemType>
+//  InitializerListSeq(const std::initializer_list<InitialElemType>& l)
+//  :
+//    seqData_(l),
+//    it_(seqData_.begin()),
+//    begin_(seqData_.begin()),
+//    end_(seqData_.end())
+//  { }
+
   InitializerListSeq(const InitializerListSeq<ElemType>& other)
   :
     seqData_(other.seqData_),

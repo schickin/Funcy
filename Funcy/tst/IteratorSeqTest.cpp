@@ -106,6 +106,17 @@ TEST_F(IteratorSeqTest, initializerListSequence)
   checkIncreasingSeq(1, 5, seq);
 }
 
+TEST_F(IteratorSeqTest, initializerListSequenceWithTypeConversion)
+{
+  auto seq = make_seq<std::string>({"hello", "world"});
+  ::testing::StaticAssertTypeEq<const std::string&, decltype(seq.cval())>();
+  EXPECT_EQ(std::string("hello"), seq.cval());
+  seq.next();
+  EXPECT_EQ("world", seq.cval());
+  seq.next();
+  EXPECT_TRUE(seq.empty());
+}
+
 TEST_F(IteratorSeqTest, initializerListSequenceByConstructor)
 {
   InitializerListSeq<int> seq = {1, 2, 3, 4, 5};
