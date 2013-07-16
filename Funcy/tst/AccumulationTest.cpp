@@ -7,6 +7,7 @@
 
 
 #include "funcy/iterator_seq.h"
+#include "funcy/range_seq.h"
 
 #include "gtest/gtest.h"
 
@@ -34,6 +35,15 @@ TEST_F(AccumulationTest, sumOfIntsWithInitialVal10)
 {
   auto seq = make_seq({1, 2, 3, 4});
   EXPECT_EQ(10 + 10, seq.sum(10));
+}
+
+TEST_F(AccumulationTest, sumOfIntsWithConversion)
+{
+  int lim = std::numeric_limits<int>::max();
+  auto seq = make_range(lim-9, lim+1);
+  long long llim = lim;
+  // the explicitly given type prevents an integer overflow
+  EXPECT_EQ((llim-10)*10 + (10*11) / 2, seq.sum<long long>());
 }
 
 TEST_F(AccumulationTest, sumOfStrings)
