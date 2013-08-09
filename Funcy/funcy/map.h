@@ -15,14 +15,13 @@ class MappedSeq;
 
 template <typename InnerSequence, typename UnaryFunction>
 class MappedSeq : public SequenceCRTP<MappedSeq<InnerSequence, UnaryFunction>,
-                                      typename InnerSequence::Elem>
+                                      typename std::result_of<
+                                        decltype(std::declval<UnaryFunction>())&(
+                                           typename InnerSequence::Elem)>::type>
 {
 public:
-  typedef decltype(
-      std::declval<UnaryFunction>()(
-          std::declval<typename InnerSequence::Elem>()
-      )
-  ) Elem;
+  typedef typename std::result_of<
+      decltype(std::declval<UnaryFunction>())&(typename InnerSequence::Elem)>::type Elem;
 
   MappedSeq(InnerSequence& inner, const UnaryFunction& func) :
     inner_(inner),
@@ -48,6 +47,5 @@ private:
   InnerSequence& inner_;
   const UnaryFunction& func_;
 };
-
 
 #endif /* MAP_H_ */

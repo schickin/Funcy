@@ -31,6 +31,26 @@ class SequenceTag
 template <typename SequenceImpl, typename Elem>
 class SequenceCRTP : public SequenceTag
 {
+private:
+
+  template <typename Arg, typename UnaryFunction>
+  class ApplyAndForward
+  {
+  public:
+    ApplyAndForward(const UnaryFunction& func) :
+      func_(func)
+    { }
+
+    Arg operator()(const Arg& elem) const
+    {
+      func_(elem);
+      return elem;
+    }
+
+  private:
+    const UnaryFunction& func_;
+  };
+
 public:
   // must be overridden by subclass
   bool empty() const;
@@ -150,6 +170,14 @@ public:
     return MappedSeq<SequenceImpl, UnaryFunction>(self(), func);
   }
 
+  template <typename UnaryFunction>
+  MappedSeq<SequenceImpl, ApplyAndForward<Elem, UnaryFunction> >
+  forEach(const UnaryFunction& func)
+  {
+    return MappedSeq<SequenceImpl, ApplyAndForward<Elem, UnaryFunction> >(self(),
+                                               ApplyAndForward<Elem, UnaryFunction>(func));
+  }
+
   template <std::size_t Capacity>
   ConstantSizeMemorySeq<SequenceImpl, Capacity> withMemory()
   {
@@ -193,6 +221,7 @@ protected:
   {
     return static_cast<const SequenceImpl&>(*this);
   }
+
 };
 
 

@@ -71,3 +71,22 @@ TEST_F(MapTest, convertNumberToString)
 
 	EXPECT_EQ(expected, result);
 }
+
+TEST_F(MapTest, forEach)
+{
+  int sumOneToTen = 0;
+  int otherSum = make_seq(oneToTen_).forEach([&](int x) { sumOneToTen += x; }).sum();
+  EXPECT_EQ(10*11/2, sumOneToTen);
+  EXPECT_EQ(sumOneToTen, otherSum);
+}
+
+TEST_F(MapTest, forEachAndMapAfterwards)
+{
+  int sumOneToTen = 0;
+  int otherSum = make_seq(oneToTen_)
+      .forEach([&](int x) { sumOneToTen += x; })
+      .map(multiplyByTwo)
+      .sum();
+  EXPECT_EQ(10*11/2, sumOneToTen);
+  EXPECT_EQ(sumOneToTen*2, otherSum);
+}

@@ -13,11 +13,11 @@
 TEST(FuncyEuler, problem6SumSquareDifference)
 {
   long long sumOfSquares =
-      make_range(1, 101).
+      make_range_closed(1, 100).
       map([](int x) { return x*x; }).
       sum<long long>();
   long long sum =
-      make_range(1, 101).
+      make_range_closed(1, 100).
       sum<long long>();
   long long squareOfSum = sum * sum;
 

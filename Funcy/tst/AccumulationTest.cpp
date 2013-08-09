@@ -40,10 +40,10 @@ TEST_F(AccumulationTest, sumOfIntsWithInitialVal10)
 TEST_F(AccumulationTest, sumOfIntsWithConversion)
 {
   int lim = std::numeric_limits<int>::max();
-  auto seq = make_range(lim-9, lim+1);
+  auto seq = make_range(lim-9, lim);
   long long llim = lim;
   // the explicitly given type prevents an integer overflow
-  EXPECT_EQ((llim-10)*10 + (10*11) / 2, seq.sum<long long>());
+  EXPECT_EQ((llim-10)*9L + (9L*10L) / 2, seq.sum<long long>());
 }
 
 TEST_F(AccumulationTest, sumOfStrings)

@@ -10,8 +10,10 @@
 
 #include "funcy/impl/sequence_crtp.h"
 
-template <typename ElemType>
-class RangeSeq : public SequenceCRTP<RangeSeq<ElemType>, ElemType>
+#include <functional>
+
+template <typename ElemType, template <typename> class Comparator = std::less>
+class RangeSeq : public SequenceCRTP<RangeSeq<ElemType, Comparator>, ElemType>
 {
 public:
   typedef ElemType Elem;
@@ -24,7 +26,7 @@ public:
 
   bool empty() const
   {
-    return curr_ == end_;
+    return !Comparator<ElemType>()(curr_, end_);
   }
 
   const Elem& cval() const
@@ -49,5 +51,10 @@ RangeSeq<ElemType> make_range(const ElemType& begin, const ElemType& end)
   return RangeSeq<ElemType>(begin, end);
 }
 
+template <typename ElemType>
+RangeSeq<ElemType, std::less_equal> make_range_closed(const ElemType& begin, const ElemType& end)
+{
+  return RangeSeq<ElemType, std::less_equal>(begin, end);
+}
 
 #endif /* RANGE_SEQ_H_ */
