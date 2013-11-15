@@ -10,6 +10,7 @@ template <typename InnerSequence, typename UnaryFunction>
 class MappedSeq;
 
 #include "funcy/impl/sequence_crtp.h"
+#include "funcy/util/metaprog.h"
 
 #include <functional>
 #include <type_traits>
@@ -49,9 +50,7 @@ public:
 
 private:
   InnerSequence& inner_;
-  typename std::conditional<std::is_function<UnaryFunction>::value,
-                            const UnaryFunction&,
-                            UnaryFunction>::type func_;
+  function_storage<UnaryFunction> func_;
 };
 
 #endif /* MAP_H_ */
