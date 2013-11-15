@@ -38,7 +38,8 @@ public:
   { currVal_ = generator_(currVal_); }
 
 private:
-  const Callable& generator_;
+  // @todo create version that can store typed callables
+  std::function<ElemType(ElemType)> generator_;
   Elem currVal_;
 };
 

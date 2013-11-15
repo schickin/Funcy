@@ -11,6 +11,7 @@ class MappedSeq;
 
 #include "funcy/impl/sequence_crtp.h"
 
+#include <functional>
 #include <type_traits>
 
 template <typename InnerSequence, typename UnaryFunction>
@@ -45,7 +46,8 @@ public:
 
 private:
   InnerSequence& inner_;
-  const UnaryFunction& func_;
+  // @todo store typed callables
+  std::function<Elem(typename InnerSequence::Elem)> func_;
 };
 
 #endif /* MAP_H_ */

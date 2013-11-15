@@ -44,6 +44,9 @@ public:
   SeqType newInstance() const
   { return defFunc_(); }
 
+  SeqType operator()() const
+  { return newInstance(); }
+
 private:
   DefiningFunc defFunc_;
 };
@@ -61,25 +64,25 @@ public:
 
   template <typename SeqType>
   SeqDef(const TypedSeqDef<SeqType>& seqDef) :
-    defFunc_([=] { return Sequence<ElemType>(seqDef.newInstance()); })
+    defFunc_(seqDef)
   { }
 
   template <typename TypedDefiningFunc>
   SeqDef(const TypedDefiningFunc& defFunc) :
-    defFunc_([=] { return Sequence<ElemType>(defFunc()); })
+    defFunc_([=] { return defFunc(); })
   { }
 
   template <typename SeqType>
   SeqDef& operator=(const TypedSeqDef<SeqType>& seqDef)
   {
-    defFunc_ = [=] { return Sequence<ElemType>(seqDef.newInstance()); };
+    defFunc_ = seqDef;
     return *this;
   }
 
   template <typename TypedDefiningFunc>
   SeqDef& operator=(const TypedDefiningFunc& defFunc)
   {
-    defFunc_ = [=] { return Sequence<ElemType>(defFunc()); };
+    defFunc_ = [=] { return defFunc(); };
     return *this;
   }
 
@@ -88,6 +91,9 @@ public:
 
   Sequence<ElemType> lazy() const
   { return Sequence<ElemType>(*this);  }
+
+  Sequence<ElemType> operator()() const
+  { return newInstance(); }
 
 private:
   DefiningFunc defFunc_;

@@ -5,7 +5,6 @@
 
 #include "gtest/gtest.h"
 
-
 namespace SeqTestHelper {
 
   enum SeqEnd { OpenSeq, ClosedSeq };
@@ -49,11 +48,12 @@ namespace SeqTestHelper {
   static void checkIncreasingSeq(const Elem& from, const Elem& to, Seq& seq,
                                  SeqEnd end = ClosedSeq)
   {
+
     for (Elem i = from; i <= to; ++i) {
-        EXPECT_FALSE(seq.empty());
-        EXPECT_EQ(i, seq.cval());
-        EXPECT_FALSE(seq.empty());
-        seq.next();
+      EXPECT_FALSE(seq.empty());
+      EXPECT_EQ(i, seq.cval());
+      EXPECT_FALSE(seq.empty());
+      seq.next();
     }
     checkSeqEnd(seq, end);
   }
