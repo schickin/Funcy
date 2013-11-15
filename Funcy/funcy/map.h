@@ -14,6 +14,9 @@ class MappedSeq;
 #include <functional>
 #include <type_traits>
 
+template <typename T>
+class TD;
+
 template <typename InnerSequence, typename UnaryFunction>
 class MappedSeq : public SequenceCRTP<MappedSeq<InnerSequence, UnaryFunction>,
                                       typename std::result_of<
@@ -46,8 +49,9 @@ public:
 
 private:
   InnerSequence& inner_;
-  // @todo store typed callables
-  std::function<Elem(typename InnerSequence::Elem)> func_;
+  typename std::conditional<std::is_function<UnaryFunction>::value,
+                            const UnaryFunction&,
+                            UnaryFunction>::type func_;
 };
 
 #endif /* MAP_H_ */
