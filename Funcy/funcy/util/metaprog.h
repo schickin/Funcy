@@ -16,4 +16,8 @@ using function_storage =
                               const Callable&,
                               Callable>::type;
 
+// Definition without declaration to show type info in compiler errors
+template <typename T>
+class TD;
+
 #endif /* METAPROG_H_ */

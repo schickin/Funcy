@@ -50,7 +50,7 @@ public:
   }
 
 private:
-  InnerSequence& inner_;
+  InnerSequence inner_;
 
   typedef typename std::conditional<std::is_function<UnaryCondition>::value,
       typename std::add_lvalue_reference<UnaryCondition>::type,

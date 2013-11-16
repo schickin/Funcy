@@ -56,7 +56,7 @@ public:
     }
 
 private:
-    InnerSequence& inner_;
+    InnerSequence inner_;
     RingBuffer<Elem, Capacity> buf_;
 };
 
