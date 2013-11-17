@@ -3,6 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include "funcy/filter.h"
 #include "funcy/iterator_seq.h"
 #include "funcy/map.h"
 
@@ -89,4 +90,16 @@ TEST_F(MapTest, forEachAndMapAfterwards)
       .sum();
   EXPECT_EQ(10*11/2, sumOneToTen);
   EXPECT_EQ(sumOneToTen*2, otherSum);
+}
+
+TEST_F(MapTest, mapFilteredSequence)
+{
+  auto withFilter = make_seq({1,2,3,4,5})
+      .filter([] (int i) { return i%2 == 0; })
+      .map([] (int i) { return i; });
+  auto withoutFilter = make_seq({1,2,3,4,5})
+    .filter([] (int i) { return i%2 == 0; });
+
+  EXPECT_EQ(withoutFilter.toVec(), withFilter.toVec());
+
 }

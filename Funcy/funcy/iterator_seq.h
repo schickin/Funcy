@@ -71,36 +71,18 @@ public:
   InitializerListSeq(const std::initializer_list<ElemType>& l)
   :
     seqData_(l),
-    it_(seqData_.begin()),
-    begin_(seqData_.begin()),
-    end_(seqData_.end())
+    it_(seqData_.cbegin())
   { }
-
-  //! Initialize the sequence form an initializer list the elements of which can be
-  //! converted to the element type of the sequence.
-  // So far, this constructor wasn't needed because the types of the initializer lists
-  // are properly converted when calling make_seq
-  // (cf. test initializerListSequenceWithTypeConversion).
-//  template <typename InitialElemType>
-//  InitializerListSeq(const std::initializer_list<InitialElemType>& l)
-//  :
-//    seqData_(l),
-//    it_(seqData_.begin()),
-//    begin_(seqData_.begin()),
-//    end_(seqData_.end())
-//  { }
 
   InitializerListSeq(const InitializerListSeq<ElemType>& other)
   :
-    seqData_(other.seqData_),
-    it_(seqData_.begin()),
-    begin_(seqData_.begin()),
-    end_(seqData_.end())
+    seqData_(other.it_, other.seqData_.end()),
+    it_(seqData_.cbegin())
   { }
 
   bool empty() const
   {
-    return it_ == end_;
+    return it_ == seqData_.end();
   }
 
   const Elem& cval() const
@@ -129,11 +111,8 @@ private:
 
   typedef std::vector<Elem> Container;
   // Container must be first member because the iterators reference it during construction
-  Container seqData_;
-  typename Container::iterator it_;
-  const typename Container::iterator begin_;
-  const typename Container::iterator end_;
-
+  const Container seqData_;
+  typename Container::const_iterator it_;
 };
 
 //! Constructor method make_seq.

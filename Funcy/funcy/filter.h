@@ -10,6 +10,7 @@ template <typename InnerSequence, typename UnaryCondition>
 class FilteredSeq;
 
 #include "funcy/impl/sequence_crtp.h"
+#include "funcy/util/metaprog.h"
 
 #include <type_traits>
 #include <utility>
@@ -26,7 +27,7 @@ public:
     condition_(condition),
     currElem_()
   {
-    while (inner_ && !condition_(currElem_ = inner_.cval())) {
+    while (!inner_.empty() && !condition_(currElem_ = inner_.cval())) {
         inner_.next();
     }
   }
@@ -52,10 +53,7 @@ public:
 private:
   InnerSequence inner_;
 
-  typedef typename std::conditional<std::is_function<UnaryCondition>::value,
-      typename std::add_lvalue_reference<UnaryCondition>::type,
-      UnaryCondition>::type UnaryConditionStorage;
-  UnaryConditionStorage condition_;
+  function_storage<UnaryCondition> condition_;
 
   Elem currElem_;
 };
